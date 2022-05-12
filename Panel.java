@@ -5,10 +5,12 @@ import java.awt.Graphics;
 import java.awt.*;
 import javax.swing.*;
 import java.util.Random;
+import java.awt.event.KeyAdapter;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.awt.event.KeyEvent;
 
 
 public class Panel extends JPanel implements ActionListener
@@ -39,6 +41,9 @@ public class Panel extends JPanel implements ActionListener
     Timer timer;
     Random random;
     
+    //typingArea = new JTextField(20);
+    //typingArea.addKeyListener(this);
+    
     public static void main(String[] args){
         
         Frame a = new Frame();
@@ -49,7 +54,8 @@ public class Panel extends JPanel implements ActionListener
         System.out.print(ScreenWidth + " " + ScreenHeight);
         a.setSize((int) screenSize.getWidth(),(int) screenSize.getHeight());
         a.setBackground(Color.black); 
-        
+        //a.addKeyListener(MyKeyAdapter);
+        //this.addKeyListener(new KeyAdapter());
         /*
         JLabel bg = new JLabel();
         bg.setSize((int) size.getWidth(),(int) size.getHeight());
@@ -65,13 +71,31 @@ public class Panel extends JPanel implements ActionListener
         //this.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
         //this.setBackground(Color.black); 
         this.setFocusable(true);
-        
+        //this.addKeyListener(this);
         
          
      
         //this.addKeyListener(new KeyAdapter());
+        //KeyEvent key = new KeyEvent(); 
+        
         
 
+    }
+    
+    public class MyKeyAdapter extends KeyAdapter{
+        @Override
+        public void keyPressed(KeyEvent e){
+            
+            int key = e.getKeyCode();
+            if((key==KeyEvent.VK_SPACE)){
+                shoot = true;
+            }
+            
+        }
+    }
+    
+    public void keyTyped (KeyEvent e){
+        
     }
      public void startGame(){
         newHoopL();
@@ -87,7 +111,7 @@ public class Panel extends JPanel implements ActionListener
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         draw(g);
-        arc(g);
+        //arc(g);
     }
     
     public void draw(Graphics g){
@@ -104,18 +128,19 @@ public class Panel extends JPanel implements ActionListener
             }
                
             if(shoot==true){
+                System.out.println("Running");
                 int x = basketbalXVal;
                 int y = basketbalYVal;
         
                 for(int i=0;i<40;i++){
-                    g.setColor(Color.white);
-                    g.fillOval(x,y,PIXEL_SIZE,PIXEL_SIZE);
+                     
                     x+=1.5;
                     y-=2;
                     g.setColor(Color.red);
                     g.fillOval(x,y,PIXEL_SIZE,PIXEL_SIZE);
             
                 }
+                shoot = false;
             }
             
             g.setColor(Color.red);
@@ -191,48 +216,20 @@ public class Panel extends JPanel implements ActionListener
     public void checkBlock(){
         
     }
-    /*
-    @Override
-  public void actionPerformed(ActionEvent e){
-        if(gameOn){
-            move();
-            checkApple();
-            checkCollisions();
-            
-        }
-        repaint();
-    }
-    
-    public class MyKeyAdapter extends KeyAdapter{
-        @Override
-        public void keyPressed(KeyEvent e){
+    public void keyPressed(KeyEvent e){
             
             int key = e.getKeyCode();
-            if((key==KeyEvent.VK_LEFT) && (right == false)){
-                left = true;
-                up = false;
-                down=false;
+            if((key==KeyEvent.VK_SPACE)){
+                System.out.println("Runningpressed");
+                shoot = true;
+                 
             }
-            if((key==KeyEvent.VK_RIGHT) && (left == false)){
-                right = true;
-                up = false;
-                down=false;
-            }
-            if((key==KeyEvent.VK_UP) && (down == false)){
-                up = true;
-                right = false;
-                left =false;
-            }
-            if((key==KeyEvent.VK_DOWN) && (up == false)){
-                down = true;
-                right = false;
-                left =false;
-            }
-            if((key==KeyEvent.VK_ENTER) && (gameOn == false)){
-                GUI new1 = new GUI();
-                //GamePanel();
-                //window.setVisible(true);
-            }
+            //return shoot; 
+        }
+    
+    //@Override
+  
+
             
             /*
             switch(e.getKeyCode()){
